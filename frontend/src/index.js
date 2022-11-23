@@ -1,1 +1,1 @@
-import App from './components/App';
+import App from './react/containers/App';
