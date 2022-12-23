@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import ResponsiveAppBar from '../components/TopNav';
-import Home from './Home';
+import HomePage from './HomePage';
 
 export default class App extends Component {
   constructor(props) {
@@ -10,10 +9,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <>
-        <ResponsiveAppBar/>
-        <Home/>
-      </>
+      <HomePage/>
     )
   }
 }
