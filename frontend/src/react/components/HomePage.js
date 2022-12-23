@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import CreateRoomPage from './CreateRoomPage';
 import JoinRoomPage from './JoinRoomPage';
+import Room from './Room';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <Route exact path='/' element={<p>This is the home page</p>}/>
         <Route path='/join' element={<JoinRoomPage/>}/>
         <Route path='/create' element={<CreateRoomPage/>}/>
+        <Route path='/room/:roomCode' element={<Room />}/>
       </Routes>
     </BrowserRouter>
   );
