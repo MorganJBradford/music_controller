@@ -12,14 +12,14 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export default function CreateRoomPage() {
   const defaultVotes = 2;
   const [guestCanPause, setGuestCanPause] = useState(true);
   const [votesToSkip, setVotesToSkip] = useState(defaultVotes);
-
+  const navigate = useNavigate();
   const handleChangeVotes = (e) => {
     setVotesToSkip(e.target.value);
   }
@@ -39,7 +39,7 @@ export default function CreateRoomPage() {
     };
     fetch('/api/create-room', requestOptions)
     .then((response) => response.json())
-    .then((data) => console.log(data))
+    .then((data) => navigate(`/room/${data.code}`))
   }
 
   return (
