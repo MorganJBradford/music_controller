@@ -5,6 +5,14 @@ export default function JoinRoomPage() {
   const [roomCode, setRoomCode] = useState(null);
   const [error, setError] = useState(null);
 
+  const handleTextChange = (e) => {
+    setRoomCode(e.target.value);
+  }
+
+  const roomButtonPressed = () => {
+
+  }
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} align='center'>
@@ -20,10 +28,11 @@ export default function JoinRoomPage() {
           value={roomCode}
           helperText={error}
           variant='outlined'
+          onChange={(e)=>handleTextChange(e)}
         />
       </Grid>
       <Grid item xs={12} align='center'>
-        <Button variant='contained' color='primary' to='/'>
+        <Button variant='contained' color='primary' to='/' onClick={roomButtonPressed}>
           Enter Room
         </Button>
       </Grid>
