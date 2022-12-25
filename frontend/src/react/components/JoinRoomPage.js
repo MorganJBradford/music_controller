@@ -23,7 +23,7 @@ export default function JoinRoomPage() {
       if (response.ok) {
         navigate(`/room/${roomCode}`)
       } else {
-        setError({error: 'Room not found.'});
+        setError('Room not found.');
       }
     }).catch((error) => {
       console.log(error);
