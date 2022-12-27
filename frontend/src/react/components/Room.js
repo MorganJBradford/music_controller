@@ -2,17 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Grid, Typography } from '@mui/material';
 
-export default function Room(props) {
+export default function Room({roomCode, clearRoomCode}) {
   const [votesToSkip, setVotesToSkip] = useState(null);
   const [guestCanPause, setGuestCanPause] = useState(false);
   const [isHost, setIsHost] = useState(false);
-  const { roomCode } = useParams();
   const navigate = useNavigate();
 
   const getRoomDetails = () => {
-    fetch(`/api/get-room?code=${roomCode}`).then((response) =>
-      response.json()
-    ).then((data) => {
+    fetch(`/api/get-room?code=${roomCode}`).then((response) => {
+      if (!response.ok) {
+        clearRoomCode();
+        navigate('/');
+      }
+      return response.json();
+    })
+    .then((data) => {
       setVotesToSkip(data.votes_to_skip);
       setGuestCanPause(data.guest_can_pause);
       setIsHost(data.is_host);
@@ -26,7 +30,8 @@ export default function Room(props) {
     }
     fetch('/api/leave-room', requestOptions)
       .then((_response) => {
-        navigate('/')
+        clearRoomCode();
+        navigate('/');
       }
     );
   }
@@ -49,12 +54,12 @@ export default function Room(props) {
       </Grid>
       <Grid item xs={12} align='center'>
         <Typography variant='h6' component='h6'>
-          Guest Can Pause: {guestCanPause}
+          Guest Can Pause: {guestCanPause.toString()}
         </Typography>
       </Grid>
       <Grid item xs={12} align='center'>
         <Typography variant='h6' component='h6'>
-          Host: {isHost}
+          Host: {isHost.toString()}
         </Typography>
       </Grid>
       <Grid item xs={12} align='center'>

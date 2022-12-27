@@ -51,6 +51,10 @@ export default function Home() {
       })
   },[])
 
+  const clearRoomCode = () => {
+    setRoomCode(null);
+  }
+
   return (
     <Routes>
       <Route exact path='/' element={
@@ -58,7 +62,7 @@ export default function Home() {
       }/>
       <Route path='/join' element={<JoinRoomPage/>}/>
       <Route path='/create' element={<CreateRoomPage/>}/>
-      <Route path='/room/:roomCode' element={<Room />}/>
+      <Route path='/room/:roomCode' element={<Room roomCode={roomCode} clearRoomCode={clearRoomCode} />}/>
     </Routes>
   );
 }
