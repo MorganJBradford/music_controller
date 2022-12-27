@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import HomePage from './HomePage';
+import { BrowserRouter } from 'react-router-dom';
 
 export default class App extends Component {
   constructor(props) {
@@ -9,7 +10,9 @@ export default class App extends Component {
 
   render() {
     return (
-      <HomePage/>
+      <BrowserRouter>
+        <HomePage/>
+      </BrowserRouter>
     )
   }
 }
