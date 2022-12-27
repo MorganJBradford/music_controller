@@ -18,9 +18,9 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         setRoomCode(data.code);
-        if (data.code) {
-          navigate(`/room/${data.code}`)
-        }
+        // if (data.code) {
+        //   navigate(`/room/${data.code}`)
+        // }
       })
   },[])
 
@@ -41,6 +41,11 @@ export default function Home() {
               <Button color='secondary' to='/create' component={ Link }>
                 Create a Room
               </Button>
+              {roomCode &&
+                <Button color='secondary' to={`/room/${roomCode}`} component={ Link }>
+                  Return to Previous Room
+                </Button>
+              }
             </ButtonGroup>
           </Grid>
         </Grid>
