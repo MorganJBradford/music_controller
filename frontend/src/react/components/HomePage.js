@@ -62,7 +62,7 @@ export default function Home() {
       }/>
       <Route path='/join' element={<JoinRoomPage/>}/>
       <Route path='/create' element={<CreateRoomPage/>}/>
-      <Route path='/room/:roomCode' element={<Room roomCode={roomCode} clearRoomCode={clearRoomCode} />}/>
+      <Route path='/room/:roomCode' element={<Room navCode={roomCode} clearRoomCode={clearRoomCode}/>}/>
     </Routes>
   );
 }

@@ -1,15 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Grid, Typography } from '@mui/material';
 
-export default function Room({roomCode, clearRoomCode}) {
+export default function Room({navCode, clearRoomCode}) {
   const [votesToSkip, setVotesToSkip] = useState(null);
   const [guestCanPause, setGuestCanPause] = useState(false);
   const [isHost, setIsHost] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const { roomCode } = useParams();
+  const [code, setCode] = useState(navCode);
   const navigate = useNavigate();
 
-  const getRoomDetails = () => {
-    fetch(`/api/get-room?code=${roomCode}`).then((response) => {
+  const toggleShowSettings = () => setShowSettings(!showSettings)
+
+  const renderSettingsButton = () => {
+    return (
+      <Grid item xs={12} align='center'>
+        <Button variant='contained' color='primary' onClick={() => toggleShowSettings(true)}>
+          Settings
+        </Button>
+      </Grid>
+    );
+  }
+
+  const getRoomDetails = async () => {
+    await fetch(`/api/get-room?code=${roomCode}`).then((response) => {
       if (!response.ok) {
         clearRoomCode();
         navigate('/');
@@ -62,6 +77,9 @@ export default function Room({roomCode, clearRoomCode}) {
           Host: {isHost.toString()}
         </Typography>
       </Grid>
+      {/* {isHost &&
+        renderSettingsButton()
+      } */}
       <Grid item xs={12} align='center'>
         <Button variant='contained' color='secondary' onClick={leaveButtonPressed}>
           Leave Room
