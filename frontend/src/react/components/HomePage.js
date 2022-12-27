@@ -10,6 +10,33 @@ import JoinRoomPage from './JoinRoomPage';
 import Room from './Room';
 import { Button, ButtonGroup, Grid, Typography } from '@mui/material';
 
+function RenderHomePage() {
+  return (
+    <Grid container spacing={3}>
+      <Grid item xs={12} align='center'>
+        <Typography variant='h3' component='h3'>
+          House Party
+        </Typography>
+      </Grid>
+      <Grid item xs={12} align='center'>
+        <ButtonGroup disableElevation variant='contained' color='primary'>
+          <Button color='primary' to='/join' component={ Link }>
+            Join a Room
+          </Button>
+          <Button color='secondary' to='/create' component={ Link }>
+            Create a Room
+          </Button>
+          {/* {roomCode &&
+            <Button color='secondary' to={`/room/${roomCode}`} component={ Link }>
+              Return to Previous Room
+            </Button>
+          } */}
+        </ButtonGroup>
+      </Grid>
+    </Grid>
+  );
+}
+
 export default function Home() {
   const [roomCode, setRoomCode] = useState(null);
   const navigate = useNavigate();
@@ -18,37 +45,16 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         setRoomCode(data.code);
-        // if (data.code) {
-        //   navigate(`/room/${data.code}`)
-        // }
+        if (data.code) {
+          navigate(`/room/${data.code}`)
+        }
       })
   },[])
 
   return (
     <Routes>
       <Route exact path='/' element={
-        <Grid container spacing={3}>
-          <Grid item xs={12} align='center'>
-            <Typography variant='h3' component='h3'>
-              House Party
-            </Typography>
-          </Grid>
-          <Grid item xs={12} align='center'>
-            <ButtonGroup disableElevation variant='contained' color='primary'>
-              <Button color='primary' to='/join' component={ Link }>
-                Join a Room
-              </Button>
-              <Button color='secondary' to='/create' component={ Link }>
-                Create a Room
-              </Button>
-              {roomCode &&
-                <Button color='secondary' to={`/room/${roomCode}`} component={ Link }>
-                  Return to Previous Room
-                </Button>
-              }
-            </ButtonGroup>
-          </Grid>
-        </Grid>
+        <RenderHomePage/>
       }/>
       <Route path='/join' element={<JoinRoomPage/>}/>
       <Route path='/create' element={<CreateRoomPage/>}/>
