@@ -29,9 +29,9 @@ export default function Room({clearRoomCode}) {
         <Grid item xs={12} align='center'>
           <CreateRoomPage
             update={true}
-            votesToSkip={votesToSkip}
-            guestCanPause={guestCanPause}
-            roomCode={roomCode}
+            votes={votesToSkip}
+            canPause={guestCanPause}
+            code={roomCode}
           />
         </Grid>
         <Grid item xs={12} align='center'>

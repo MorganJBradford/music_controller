@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import {
-  Box,
   Button,
   FormControl,
   FormControlLabel,
   FormHelperText,
   Grid,
-  Paper,
   Radio,
   RadioGroup,
   TextField,
-  Typography
+  Typography,
+  Collapse
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 
 
-export default function CreateRoomPage() {
+export default function CreateRoomPage({update, votes, canPause, code}) {
   const defaultVotes = 2;
-  const [guestCanPause, setGuestCanPause] = useState(true);
-  const [votesToSkip, setVotesToSkip] = useState(defaultVotes);
+  const [guestCanPause, setGuestCanPause] = useState(update ? canPause : true);
+  const [votesToSkip, setVotesToSkip] = useState(update ? votes : defaultVotes);
+  const [message, setMessage] = useState(null);
   const navigate = useNavigate();
   const handleChangeVotes = (e) => {
     setVotesToSkip(e.target.value);
@@ -42,14 +42,42 @@ export default function CreateRoomPage() {
     .then((data) => navigate(`/room/${data.code}`))
   }
 
+  const handleUpdateButtonPressed = () => {
+    const requestOptions = {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        guest_can_pause: guestCanPause,
+        votes_to_skip: votesToSkip,
+        code: code
+      }),
+    };
+    fetch('/api/update-room', requestOptions)
+    .then((response) => {
+      if (response.ok) {
+        setMessage('Room updated successfully!');
+      } else {
+        setMessage('Error updating room')
+      }
+    });
+  }
+
+  const title = update ? 'Update Room': 'Create a Room';
+
   return (
     <Grid container spacing={1}>
+      <Grid item xs={12} align="center">
+        <Collapse in={message}>
+
+          {message}
+        </Collapse>
+      </Grid>
       <Grid item xs={12} align="center">
         <Typography
           component='h4'
           variant='h4'
         >
-          Create A Room
+          {title}
         </Typography>
       </Grid>
       <Grid item xs={12} align="center">
@@ -61,7 +89,7 @@ export default function CreateRoomPage() {
               Guest Control of Playback State
             </div>
           </FormHelperText>
-          <RadioGroup row defaultValue='true' onChange={(e)=>handleGuestCanPauseChange(e)}>
+          <RadioGroup row defaultValue={`${guestCanPause}`} onChange={(e)=>handleGuestCanPauseChange(e)}>
             <FormControlLabel
               value='true'
               control={
@@ -87,7 +115,7 @@ export default function CreateRoomPage() {
             required={true}
             type='number'
             onChange={(e)=>handleChangeVotes(e)}
-            defaultValue={defaultVotes}
+            defaultValue={votesToSkip}
             inputProps={{
               min: 1,
               style: {textAlign: 'center'}
@@ -101,11 +129,15 @@ export default function CreateRoomPage() {
         </FormControl>
       </Grid>
       <Grid item xs={12} align='center'>
-        <Button color='primary' variant='contained' onClick={handleRoomButtonPressed}>Create a Room</Button>
+        <Button color='primary' variant='contained' onClick={update ? handleUpdateButtonPressed : handleRoomButtonPressed}>
+          {title}
+        </Button>
       </Grid>
-      <Grid item xs={12} align='center'>
-        <Button color='secondary' variant='contained' to='/' component={Link}>Back</Button>
-      </Grid>
+      {!update &&
+        <Grid item xs={12} align='center'>
+          <Button color='secondary' variant='contained' to='/' component={Link}>Back</Button>
+        </Grid>
+      }
     </Grid>
   );
 }
