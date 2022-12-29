@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Grid, Typography } from '@mui/material';
 import CreateRoomPage from './CreateRoomPage';
+import MusicPlayer from './MediaPlayer';
 
 export default function Room({clearRoomCode}) {
   const [guestCanPause, setGuestCanPause] = useState(false);
   const [isHost, setIsHost] = useState(false);
-  const [song, setSong] = useState({});
+  const [song, setSong] = useState(null);
   const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
   const [votesToSkip, setVotesToSkip] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
@@ -126,7 +127,9 @@ export default function Room({clearRoomCode}) {
           Code: {roomCode}
         </Typography>
       </Grid>
-
+      {song &&
+        <MusicPlayer song={song}/>
+      }
       {isHost &&
         renderSettingsButton()
       }
