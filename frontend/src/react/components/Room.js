@@ -4,10 +4,11 @@ import { Button, Grid, Typography } from '@mui/material';
 import CreateRoomPage from './CreateRoomPage';
 
 export default function Room({clearRoomCode}) {
-  const [votesToSkip, setVotesToSkip] = useState(null);
   const [guestCanPause, setGuestCanPause] = useState(false);
   const [isHost, setIsHost] = useState(false);
+  const [song, setSong] = useState({});
   const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
+  const [votesToSkip, setVotesToSkip] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
   const { roomCode } = useParams();
   const navigate = useNavigate();
@@ -27,6 +28,19 @@ export default function Room({clearRoomCode}) {
           });
         }
       });
+  }
+
+  const getCurrentSong = () => {
+    fetch('/spotify/current-song')
+      .then((response) => {
+        if (!response.ok) {
+          return {};
+        } else {
+          return response.json();
+        }
+      }).then((data) => {
+        setSong(data);
+      })
   }
 
   const getRoomDetails = async () => {
@@ -93,7 +107,14 @@ export default function Room({clearRoomCode}) {
 
   useEffect(() => {
     getRoomDetails();
+
+    //! Spotify does not support websockets for free
+    const getSongTimer = setInterval(() => getCurrentSong(), 1000);
+    return () => {
+      clearInterval(getSongTimer);
+    }
   },[])
+
 
   return (
     showSettings ?
@@ -105,21 +126,7 @@ export default function Room({clearRoomCode}) {
           Code: {roomCode}
         </Typography>
       </Grid>
-      <Grid item xs={12} align='center'>
-        <Typography variant='h6' component='h6'>
-          Votes: {votesToSkip}
-        </Typography>
-      </Grid>
-      <Grid item xs={12} align='center'>
-        <Typography variant='h6' component='h6'>
-          Guest Can Pause: {guestCanPause.toString()}
-        </Typography>
-      </Grid>
-      <Grid item xs={12} align='center'>
-        <Typography variant='h6' component='h6'>
-          Host: {isHost.toString()}
-        </Typography>
-      </Grid>
+
       {isHost &&
         renderSettingsButton()
       }
