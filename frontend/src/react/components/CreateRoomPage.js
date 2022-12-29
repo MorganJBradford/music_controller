@@ -14,7 +14,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 
 
-export default function CreateRoomPage({update, votes, canPause, code}) {
+export default function CreateRoomPage({update, votes, canPause, code, updateCallBack}) {
   const defaultVotes = 2;
   const [guestCanPause, setGuestCanPause] = useState(update ? canPause : true);
   const [votesToSkip, setVotesToSkip] = useState(update ? votes : defaultVotes);
@@ -59,6 +59,7 @@ export default function CreateRoomPage({update, votes, canPause, code}) {
       } else {
         setMessage('Error updating room')
       }
+      updateCallBack();
     });
   }
 

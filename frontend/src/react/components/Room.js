@@ -23,25 +23,6 @@ export default function Room({clearRoomCode}) {
     );
   }
 
-  const renderSettings = () => {
-    return (
-      <Grid container spacing={1}>
-        <Grid item xs={12} align='center'>
-          <CreateRoomPage
-            update={true}
-            votes={votesToSkip}
-            canPause={guestCanPause}
-            code={roomCode}
-          />
-        </Grid>
-        <Grid item xs={12} align='center'>
-          <Button variant='contained' color='secondary' onClick={toggleShowSettings}>
-            Close
-          </Button>
-        </Grid>
-      </Grid>
-    );
-  }
 
   const getRoomDetails = async () => {
     await fetch(`/api/get-room?code=${roomCode}`).then((response) => {
@@ -56,6 +37,27 @@ export default function Room({clearRoomCode}) {
       setGuestCanPause(data.guest_can_pause);
       setIsHost(data.is_host);
     })
+  }
+
+  const renderSettings = () => {
+    return (
+      <Grid container spacing={1}>
+        <Grid item xs={12} align='center'>
+          <CreateRoomPage
+            update={true}
+            votes={votesToSkip}
+            canPause={guestCanPause}
+            code={roomCode}
+            updateCallBack={getRoomDetails}
+          />
+        </Grid>
+        <Grid item xs={12} align='center'>
+          <Button variant='contained' color='secondary' onClick={toggleShowSettings}>
+            Close
+          </Button>
+        </Grid>
+      </Grid>
+    );
   }
 
   const leaveButtonPressed = () => {
