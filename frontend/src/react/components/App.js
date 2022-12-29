@@ -11,7 +11,9 @@ export default class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <HomePage/>
+        <div className='center'>
+          <HomePage/>
+        </div>
       </BrowserRouter>
     )
   }
