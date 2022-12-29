@@ -7,22 +7,27 @@ export default function Room({clearRoomCode}) {
   const [votesToSkip, setVotesToSkip] = useState(null);
   const [guestCanPause, setGuestCanPause] = useState(false);
   const [isHost, setIsHost] = useState(false);
+  const [spotifyAuthenticated, setSpotifyAuthenticated] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const { roomCode } = useParams();
   const navigate = useNavigate();
 
-  const toggleShowSettings = () => setShowSettings(!showSettings)
+  const toggleShowSettings = () => setShowSettings(!showSettings);
 
-  const renderSettingsButton = () => {
-    return (
-      <Grid item xs={12} align='center'>
-        <Button variant='contained' color='primary' onClick={() => toggleShowSettings(true)}>
-          Settings
-        </Button>
-      </Grid>
-    );
+  const authenticateSpotify = () => {
+    fetch('/spotify/is-authenticated')
+      .then((response) => response.json())
+      .then((data) => {
+        setSpotifyAuthenticated(data.status);
+        if (!data.status) {
+          fetch('/spotify/get-auth-url')
+          .then((response) => response.json())
+          .then((data) => {
+            window.location.replace(data.url);
+          });
+        }
+      });
   }
-
 
   const getRoomDetails = async () => {
     await fetch(`/api/get-room?code=${roomCode}`).then((response) => {
@@ -36,7 +41,33 @@ export default function Room({clearRoomCode}) {
       setVotesToSkip(data.votes_to_skip);
       setGuestCanPause(data.guest_can_pause);
       setIsHost(data.is_host);
+      if (data.is_host) {
+        authenticateSpotify();
+      }
     })
+  }
+
+  const leaveButtonPressed = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+    }
+    fetch('/api/leave-room', requestOptions)
+      .then((_response) => {
+        clearRoomCode();
+        navigate('/');
+      }
+    );
+  }
+
+  const renderSettingsButton = () => {
+    return (
+      <Grid item xs={12} align='center'>
+        <Button variant='contained' color='primary' onClick={() => toggleShowSettings(true)}>
+          Settings
+        </Button>
+      </Grid>
+    );
   }
 
   const renderSettings = () => {
@@ -57,19 +88,6 @@ export default function Room({clearRoomCode}) {
           </Button>
         </Grid>
       </Grid>
-    );
-  }
-
-  const leaveButtonPressed = () => {
-    const requestOptions = {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-    }
-    fetch('/api/leave-room', requestOptions)
-      .then((_response) => {
-        clearRoomCode();
-        navigate('/');
-      }
     );
   }
 
