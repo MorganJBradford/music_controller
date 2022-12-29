@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Button,
+  Collapse,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -9,7 +11,6 @@ import {
   RadioGroup,
   TextField,
   Typography,
-  Collapse
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -18,7 +19,8 @@ export default function CreateRoomPage({update, votes, canPause, code, updateCal
   const defaultVotes = 2;
   const [guestCanPause, setGuestCanPause] = useState(update ? canPause : true);
   const [votesToSkip, setVotesToSkip] = useState(update ? votes : defaultVotes);
-  const [message, setMessage] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const handleChangeVotes = (e) => {
     setVotesToSkip(e.target.value);
@@ -55,9 +57,9 @@ export default function CreateRoomPage({update, votes, canPause, code, updateCal
     fetch('/api/update-room', requestOptions)
     .then((response) => {
       if (response.ok) {
-        setMessage('Room updated successfully!');
+        setSuccess('Room updated successfully!');
       } else {
-        setMessage('Error updating room')
+        setError('Error updating room')
       }
       updateCallBack();
     });
@@ -68,9 +70,22 @@ export default function CreateRoomPage({update, votes, canPause, code, updateCal
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} align="center">
-        <Collapse in={message}>
-
-          {message}
+        <Collapse in={success || error}>
+          {success ?
+            <Alert
+              severity='success'
+              onClose={()=>setSuccess(null)}
+            >
+              {success}
+            </Alert>
+          :
+            <Alert
+              severity='error'
+              onClose={()=>setError(null)}
+            >
+              {error}
+            </Alert>
+          }
         </Collapse>
       </Grid>
       <Grid item xs={12} align="center">
