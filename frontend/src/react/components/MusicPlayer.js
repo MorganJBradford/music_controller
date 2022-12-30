@@ -62,6 +62,7 @@ export default function MusicPlayer({song}) {
             </IconButton>
             <IconButton onClick={() => skipSong()}>
               <SkipNextIcon />
+              {song.votes} / {song.votes_required}
             </IconButton>
           </div>
         </Grid>
