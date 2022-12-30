@@ -46,6 +46,9 @@ export default function MusicPlayer({song}) {
           <Typography color='textSecondary' variant='subtitle1'>
             {song.artist}
           </Typography>
+          <Typography color='textSecondary' variant='subtitle1'>
+            {song.votes} / {song.votes_required}
+          </Typography>
           <div>
             <IconButton onClick={() => {
               song.is_playing ?
@@ -62,7 +65,6 @@ export default function MusicPlayer({song}) {
             </IconButton>
             <IconButton onClick={() => skipSong()}>
               <SkipNextIcon />
-              {song.votes} / {song.votes_required}
             </IconButton>
           </div>
         </Grid>
