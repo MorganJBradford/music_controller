@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Grid, Typography } from '@mui/material';
 import CreateRoomPage from './CreateRoomPage';
-import MusicPlayer from './MediaPlayer';
+import MusicPlayer from './MusicPlayer';
 
 export default function Room({clearRoomCode}) {
   const [guestCanPause, setGuestCanPause] = useState(false);
