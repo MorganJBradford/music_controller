@@ -91,7 +91,7 @@ class CurrentSong(APIView):
         name = artist.get('name')
         artist_string += name
 
-    votes = Vote.objects.filter(room=room, song_id=song_id)
+    votes = len(Vote.objects.filter(room=room, song_id=song_id))
 
     song = {
         'title': item.get('name'),
