@@ -25,6 +25,7 @@ export default function Room({clearRoomCode}) {
           fetch('/spotify/get-auth-url')
           .then((response) => response.json())
           .then((data) => {
+            if (data === {}) setSong(null);
             window.location.replace(data.url);
           });
         }
