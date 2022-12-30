@@ -103,6 +103,7 @@ class CurrentSong(APIView):
 
     return Response(song, status.HTTP_200_OK)
 
+#! Only works with Spotify Premium
 class PauseSong(APIView):
   def put(self, request, format=None):
     room_code = self.request.session.get('room_code')
@@ -113,6 +114,7 @@ class PauseSong(APIView):
 
     return Response({}, status=status.HTTP_403_FORBIDDEN)
 
+#! Only works with Spotify Premium
 class PlaySong(APIView):
   def put(self, request, format=None):
     room_code = self.request.session.get('room_code')

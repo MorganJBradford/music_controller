@@ -7,6 +7,7 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 export default function MusicPlayer({song}) {
   const songProgress = (song.time / song.duration) * 100;
 
+  //! Only works with Spotify Premium
   const pauseSong = () => {
     const requestOptions = {
       method: 'PUT',
@@ -15,6 +16,7 @@ export default function MusicPlayer({song}) {
     fetch('/spotify/pause', requestOptions);
   }
 
+  //! Only works with Spotify Premium
   const playSong = () => {
     const requestOptions = {
       method: 'PUT',
