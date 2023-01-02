@@ -112,6 +112,8 @@ A website where users can show what they are currently listening to on Spotify, 
       1. Enter `npm install` in your terminal.
       2. Enter `npm run dev` in your terminal.
 
+  * See required Python packages at https://github.com/MorganJBradford/music_controller/blob/main/requirements.txt
+
 ------------------------------
 
 ## 🤝 Contact
